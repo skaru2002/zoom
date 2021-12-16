@@ -1,0 +1,14 @@
+{
+  "name": "Zoom",
+  "version": "1.0.0",
+  "description": "Zoom Clone using NodeJS, WebRTC and Websockets",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skaru2002/zoom.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/skaru2002/zoom/issues"
+  },
+  "homepage": "https://github.com/skaru2002/zoom#readme"
+}

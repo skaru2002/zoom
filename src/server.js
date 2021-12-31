@@ -15,11 +15,18 @@ const httpServer = http.createServer(app);
 const wsServer = socketIO(httpServer);
 
 wsServer.on("connection", (socket) => {
-    socket.on("enter_room", (roomName, done) => {
+    socket.onAny((event) => {
+        console.log(`Socket Event: ${event}`);
+    })
+    console.log(socket.rooms); 
+    socket.on("enter_room", (roomName, done) => { 
         console.log(roomName);
+        socket.join(roomName);        
         setTimeout(() => {
             done("hello from backend");
         }, 1000);
+    }).on("enter_room",(roomName,done) => {
+        
     })
 })
 

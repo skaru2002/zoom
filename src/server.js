@@ -3,6 +3,7 @@ import socketIO from "socket.io";
 import express from "express";
 
 const app = express();
+const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
@@ -23,6 +24,9 @@ wsServer.on("connection", (socket) => {
 })
 
 
+httpServer.listen(3000, handleListen); 
+
+
 //#region websocket script
 // import http from "http";
 // import WebSocket from "ws";
@@ -36,7 +40,6 @@ wsServer.on("connection", (socket) => {
 // app.get("/", (_, res) => res.render("home"));
 // app.get("/*", (_, res) => res.redirect("/"));
 
-// const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
 // const server = http.createServer(app);
 // const wss = new WebSocket.Server({server});
@@ -65,5 +68,4 @@ wsServer.on("connection", (socket) => {
 //     });
 // });
 
-// server.listen(3000, handleListen);
 //#endregion

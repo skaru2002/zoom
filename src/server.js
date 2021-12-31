@@ -1,9 +1,8 @@
 import http from "http";
-import socketIO from "socket.io";
+import SocketIO from "socket.io";
 import express from "express";
 
 const app = express();
-const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
@@ -12,27 +11,41 @@ app.get("/", (_, res) => res.render("home"));
 app.get("/*", (_, res) => res.redirect("/"));
 
 const httpServer = http.createServer(app);
-const wsServer = socketIO(httpServer);
+const wsServer = SocketIO(httpServer);
 
 wsServer.on("connection", (socket) => {
     socket.onAny((event) => {
         console.log(`Socket Event: ${event}`);
-    })
-    console.log(socket.rooms); 
-    socket.on("enter_room", (roomName, done) => { 
-        console.log(roomName);
-        socket.join(roomName);        
-        setTimeout(() => {
-            done("hello from backend");
-        }, 1000);
-    }).on("enter_room",(roomName,done) => {
-        
-    })
-})
+    });
+    socket.on("enter_room", (roomName, done) => {
+        socket.join(roomName);
+        done();
+    });
+});
 
+/*
+const wss = new WebSocket.Server({ server });
+const sockets = [];
+wss.on("connection", (socket) => {
+  sockets.push(socket);
+  socket["nickname"] = "Anon";
+  console.log("Connected to Browser ✅");
+  socket.on("close", onSocketClose);
+  socket.on("message", (msg) => {
+    const message = JSON.parse(msg);
+    switch (message.type) {
+      case "new_message":
+        sockets.forEach((aSocket) =>
+          aSocket.send(`${socket.nickname}: ${message.payload}`)
+        );
+      case "nickname":
+        socket["nickname"] = message.payload;
+    }
+  });
+}); */
 
-httpServer.listen(3000, handleListen); 
-
+const handleListen = () => console.log(`Listening on http://localhost:3000`);
+httpServer.listen(3000, handleListen);
 
 //#region websocket script
 // import http from "http";

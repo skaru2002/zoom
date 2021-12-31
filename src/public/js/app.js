@@ -2,23 +2,28 @@ const socket = io();
 
 const welcome = document.getElementById("welcome");
 const form = welcome.querySelector("form");
+const room = document.getElementById("room");
 
-function backendDone(msg) {
-    console.log(`Backend Says: `, msg);
+room.hidden = true;
+
+let roomName;
+
+function showRoom() {
+    welcome.hidden = true;
+    room.hidden = false;
+    const h3 = room.querySelector("h3");
+    h3.innerText = `Room ${roomName}`;
 }
 
 function handleRoomSubmit(event) {
     event.preventDefault();
     const input = form.querySelector("input");
-    socket.emit("enter_room",
-        input.value,
-        backendDone
-    );
+    socket.emit("enter_room", input.value, showRoom);
+    roomName = input.value;
     input.value = "";
 }
 
 form.addEventListener("submit", handleRoomSubmit);
-
 //#region websocket script
 // const messageList = document.querySelector("ul");
 // const nicknameForm = document.querySelector("#nickname");

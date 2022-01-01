@@ -8,6 +8,13 @@ room.hidden = true;
 
 let roomName;
 
+function addMassage(msg) {
+    const ul = room.querySelector("ul");
+    const li = document.createElement("li");
+    li.innerText = msg;
+    ul.appendChild(li);
+}
+
 function showRoom() {
     welcome.hidden = true;
     room.hidden = false;
@@ -24,6 +31,11 @@ function handleRoomSubmit(event) {
 }
 
 form.addEventListener("submit", handleRoomSubmit);
+
+socket.on("welcome", () => {
+    addMassage("someone joined")
+});
+
 //#region websocket script
 // const messageList = document.querySelector("ul");
 // const nicknameForm = document.querySelector("#nickname");

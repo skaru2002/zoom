@@ -15,11 +15,31 @@ function addMassage(msg) {
     ul.appendChild(li);
 }
 
+function handleNicknameSubmit(event) {
+    event.preventDefault();
+    const input = room.querySelector("#name input");
+    socket.emit("nickname", input.value);
+}
+
+function handleMessageSubmit(event) {
+    event.preventDefault();
+    const input = room.querySelector("#msg input");
+    const value = input.value;
+    socket.emit("new_message", input.value, roomName, () => {
+        addMassage(`You: ${value}`);
+    });
+    input.value = "";
+}
+
 function showRoom() {
     welcome.hidden = true;
     room.hidden = false;
     const h3 = room.querySelector("h3");
     h3.innerText = `Room ${roomName}`;
+    const nameForm = room.querySelector("#name");
+    const msgForm = room.querySelector("#msg");
+    nameForm.addEventListener("submit", handleNicknameSubmit);
+    msgForm.addEventListener("submit", handleMessageSubmit);
 }
 
 function handleRoomSubmit(event) {
@@ -32,9 +52,14 @@ function handleRoomSubmit(event) {
 
 form.addEventListener("submit", handleRoomSubmit);
 
-socket.on("welcome", () => {
-    addMassage("someone joined")
+socket.on("welcome", (user) => {
+    addMassage(`${user} arrived!!`)
 });
+
+socket.on("bye", (user) => {
+    addMassage(`${user} left ㅠㅠ`)
+})
+socket.on("new_message", addMassage);
 
 //#region websocket script
 // const messageList = document.querySelector("ul");
